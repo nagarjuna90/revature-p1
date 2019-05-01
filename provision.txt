@@ -1,0 +1,39 @@
+#cloud-config
+package_update: true
+packages:
+  - build-essential
+  - curl
+  - file
+  - git
+  - npm
+  - nodejs
+write_files:
+  - owner: 'nagarjuna:nagarjuna'
+    path: '/home/nagarjuna/server.js'
+    content: |
+      const http = require('http');
+
+      const hostname = '0.0.0.0';
+      const port = 8000;
+
+      const server = http.createServer((req, res) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html');
+            res.end('<h1>Hello World</h1>');
+       });
+
+       server.listen(port, hostname, () => {
+       console.log(`Server running at http://${hostname}:${port}/`);
+       });
+
+runcmd:
+  - sudo mkfs -t ext4 /dev/sdc
+  - sudo mkdir /media/diskname
+  - sudo mount /dev/sdc media/diskname
+  - cd '/home/nagarjuna/'
+  - sudo mv server.js /media/diskname/
+  - cd '/media/diskname/'
+  - sudo npm init -y
+  - sudo npm install express
+  - node server.js
+  
