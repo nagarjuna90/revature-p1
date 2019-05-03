@@ -10,7 +10,7 @@ if(learn){
           const img = document.createElement('img')
           img.src = `/uploads/${image}`
 
-          learn.appendChild(img)
+          learn.appendChild(img)  //Node.appendChild() method adds a node to the end of the list of children of a specified parent node.
         })
     });
 
