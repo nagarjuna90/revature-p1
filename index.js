@@ -8,7 +8,7 @@ if(learn){
     .then(res => {
         res.forEach(image =>{
           const img = document.createElement('img')
-          img.src = `/uploads/${image}`
+          img.src = image
 
           learn.appendChild(img)  //Node.appendChild() method adds a node to the end of the list of children of a specified parent node.
         })
