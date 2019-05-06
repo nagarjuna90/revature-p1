@@ -1,14 +1,11 @@
 require('dotenv').config();
+const cosmos = require('@azure/cosmos').CosmosClient;
 const express = require('express');
 const bodyParser = require('body-parser'); //Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
 const multer = require('multer'); //Multer adds a body object and a file object to the request object. The body object contains the values of the text fields of the form, the file object contains the files uploaded via the form.
-
 const logger = require('morgan');
-
-
 const {
     Aborter,
-    BlobURL,
     BlockBlobURL,
     ContainerURL,
     ServiceURL,
@@ -28,8 +25,8 @@ const ONE_MINUTE = 60 * 1000;
 const sharedKeyCredential = new SharedKeyCredential(
     process.env.AZURE_STORAGE_ACCOUNT_NAME,
     process.env.AZURE_STORAGE_ACCOUNT_ACCESS_KEY);
-  const pipeline = StorageURL.newPipeline(sharedKeyCredential);
-  const serviceURL = new ServiceURL(
+const pipeline = StorageURL.newPipeline(sharedKeyCredential);
+const serviceURL = new ServiceURL(
     `https://${process.env.AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net`,
     pipeline
   );
@@ -69,6 +66,13 @@ try {
 
 }
 });
+const nosql = new cosmos( {endpoint: process.env.AZURE_COSMOS_ACCOUNT_NAME, auth: { 
+  masterKey: process.env.AZURE_COSMOS_ACCOUNT_ACCESS_KEY
+}});
+
+
+// nosql.database('sqlacco').container('sqlcont').items.readAll().toArray().then(res => console.log(res.result))
+    
 
 
 app.get('/', (req, res) => {    // GET / route for serving index.html file
@@ -83,21 +87,8 @@ app.get('/images', (req, res) => {
               return `${containerURL.storageClientContext.url}/${item.name}`;
           }));
      });
-// fs.readdir(directoryPath, (err, files) => {
-//     if (err) {
-//         return res.json([]);
-//     }
-//     return res.json(files);
-    // });
+
 });
-
-
-// app.post('/upload', upload.single('myFile'), (req, res) => {  // POST /upload for single file upload
-                    
-
-//     res.redirect('/')   // Redirecting back to the home local host:8080/
-
-// });
 
 app.listen(port, () => {   // To make the server live
 console.log(`App is live on port ${port}`);

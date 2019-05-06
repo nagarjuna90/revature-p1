@@ -1,3 +1,4 @@
+#!/bin/bash
 
 resourcegroup=$1
 blobStorageAccount=$2
@@ -13,6 +14,3 @@ blobStorageAccountKey=$(az storage account keys list -g $resourcegroup \
 
 az storage container create -n images --account-name $blobStorageAccount \
 --account-key $blobStorageAccountKey --public-access container 
-
-
-
