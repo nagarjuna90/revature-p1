@@ -3,7 +3,7 @@
 groupName=$1
 servicePlanName=$2
 appName=$3
-gitrepo=https://github.com/nagarjuna90/revature-p1
+gitrepo=https://github.com/nagarjuna90/revature-p1/tree/master/challenge
 
 
 
